@@ -4,5 +4,7 @@ python-multipart==0.0.20
 neo4j-graphrag==1.11.0
 openai==2.6.1
 cohere==5.20.0
+google-genai==1.56.0
 pydantic==2.11.7
 qdrant-client==1.15.1
+pydantic-settings==2.12.0
