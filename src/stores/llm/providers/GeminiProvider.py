@@ -3,6 +3,7 @@ from ..LLMEnums import GeminiEnums, DocumentTypeEnum
 from google import genai
 from google.genai import types
 from google.genai.types import GenerateContentConfig
+from schemes.GraphComponents import GraphComponents
 import logging
 
 class GeminiProvider(LLMInterface):
@@ -62,6 +63,30 @@ class GeminiProvider(LLMInterface):
 
         return [embed for embed in embeddings_result.embeddings]
     
+    def generate_with_structured_output(self, prompt: str, chat_history=[]):
+
+        if not self.client:
+            self.logger.error("Gemini client was not set")
+            return None
+        
+        if not self.generation_model_id:
+            self.logger.error("Generation Model ID was not set")
+            return None
+        
+        response = self.client.models.generate_content(
+            model = self.generation_model_id,
+            contents=prompt,
+            config=GenerateContentConfig(
+                system_instruction=chat_history,
+                response_mime_type="application/json",
+                response_json_schema=GraphComponents.model_json_schema(),
+            )
+        )
+
+        graph_components = GraphComponents.model_validate_json(response.text)
+
+        return graph_components
+    
     def generate_text(self, prompt, chat_history= [], max_output_tokens = None, temperature = None):
         
         if not self.client:
@@ -78,9 +103,9 @@ class GeminiProvider(LLMInterface):
         
         response = self.client.models.generate_content(
             model = self.generation_model_id,
-            contents= prompt,
+            contents=prompt,
             config=GenerateContentConfig(
-                system_instruction = chat_history,
+                system_instruction=chat_history,
                 temperature=temperature,
                 max_output_tokens=max_output_tokens
             )

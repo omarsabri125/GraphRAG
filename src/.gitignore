@@ -3,3 +3,4 @@ output
 .vscode
 __pycache__/
 *.pyc
+assets

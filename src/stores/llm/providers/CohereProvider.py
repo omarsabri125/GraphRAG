@@ -1,6 +1,7 @@
 from ..LLMInterface import LLMInterface
 from ..LLMEnums import CohereEnums, DocumentTypeEnum
 from typing import Union, List
+from schemes.GraphComponents import GraphComponents
 import logging
 import cohere
 
@@ -32,6 +33,35 @@ class CohereProvider(LLMInterface):
     def set_embedding_model(self, model_id: str, embedding_dimension: int):
         self.embedding_model_id = model_id
         self.embedding_size = embedding_dimension
+    
+    def generate_with_structured_output(self, prompt: str, chat_history=[]):
+        
+        if not self.client:
+            self.logger.error("Cohere client is not initialized.")
+            return None
+
+        if not self.generation_model_id:
+            self.logger.error("Generation model is not set.")
+            return None
+        
+        
+        chat_history.append(
+            self.construt_prompt(prompt, role=CohereEnums.USER.value)
+        )
+
+        response = self.client.chat(
+            model=self.generation_model_id,
+            messages=chat_history,
+            response_format={"type": "json_object"},
+        )
+
+        if not response or not response.message.content[0].text:
+            self.logger.error("No response from Cohere API.")
+            return None
+        
+        text = response.message.content[0].text
+        
+        return GraphComponents.model_validate_json(text)
 
     def generate_text(self, prompt: str, chat_history=[], max_output_tokens: int = None, temperature: float = None):
         if not self.client:

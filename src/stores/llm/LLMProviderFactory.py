@@ -1,5 +1,5 @@
-from .providers import CohereProvider, GeminiProvider
 from .LLMEnums import LLMEnums
+from .providers import CohereProvider, GeminiProvider
 
 class LLMProviderFactory:
     def __init__(self, config: dict):
@@ -22,3 +22,5 @@ class LLMProviderFactory:
                 default_output_max_tokens=self.config.DAFAULT_OUTPUT_MAX_TOKENS,
                 default_temperature=self.config.DAFAULT_TEMPERATURE
             )
+        
+        return None

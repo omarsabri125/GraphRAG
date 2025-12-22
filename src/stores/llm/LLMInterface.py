@@ -9,6 +9,10 @@ class LLMInterface(ABC):
      @abstractmethod
      def set_generation_model(self, model_id: str):
           pass
+
+     @abstractmethod
+     def generate_with_structured_output(self, prompt: str, chat_history=[]):
+          pass
      
      @abstractmethod
      def generate_text(self, prompt: str, chat_history=[], max_output_tokens: int = None, temperature: float = None):

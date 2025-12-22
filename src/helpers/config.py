@@ -38,9 +38,3 @@ class Settings(BaseSettings):
 
 def get_settings():
     return Settings()
-
-# config = get_settings()
-
-# print(config.GEMINI_API_KEY)
-# print('\n')
-# print(config.OPENAI_API_KEY)
