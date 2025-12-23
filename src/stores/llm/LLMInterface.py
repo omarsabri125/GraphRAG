@@ -11,7 +11,7 @@ class LLMInterface(ABC):
           pass
 
      @abstractmethod
-     def generate_with_structured_output(self, prompt: str, chat_history=[]):
+     def generate_with_structured_output(self, prompt: str, chat_history: Union[str, List] = None):
           pass
      
      @abstractmethod

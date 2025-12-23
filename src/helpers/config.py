@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     QDRANT_CACHE_PATH: Optional[str] = None
     VECTOR_DB_DISTANCE_METHOD: Optional[str] = None
 
+    COLLECTION_NAME: Optional[str] = None
+    CACHE_NAME: Optional[str] = None
+
     PRIMARY_LANG: Optional[str] = None
     DEFAULT_LANG: str
 

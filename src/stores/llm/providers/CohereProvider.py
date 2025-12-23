@@ -34,7 +34,7 @@ class CohereProvider(LLMInterface):
         self.embedding_model_id = model_id
         self.embedding_size = embedding_dimension
     
-    def generate_with_structured_output(self, prompt: str, chat_history=[]):
+    def generate_with_structured_output(self, prompt: str, chat_history: Union[str, List] = None):
         
         if not self.client:
             self.logger.error("Cohere client is not initialized.")

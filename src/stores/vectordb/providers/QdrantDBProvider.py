@@ -137,7 +137,7 @@ class QdrantDBProvider(VectorDBInterface):
 
         return False
 
-    async def insert_one(self, collection_name: str, text: str, vector: list, metadata: dict = None, id: str = None):
+    async def insert_one(self, collection_name: str, text: str, vector: list, entity_ids: list = None):
 
         if not await self.is_collection_exists(collection_name):
             self.logger.error(f"Collection {collection_name} does not exist.")
@@ -148,7 +148,7 @@ class QdrantDBProvider(VectorDBInterface):
             vector=vector,
             payload={
                 "text": text,
-                "metadata": metadata
+                "entity_id": entity_ids
             }
         )
 
@@ -159,7 +159,7 @@ class QdrantDBProvider(VectorDBInterface):
 
         return True
 
-    async def insert_many(self, collection_name: str, texts: list, vectors: list, metadatas: list = None, ids: list = None, batch_size: int = 50):
+    async def insert_many(self, collection_name: str, texts: list, vectors: list, entity_ids: list = None, batch_size: int = 50):
 
         if not await self.is_collection_exists(collection_name):
             self.logger.error(f"Collection {collection_name} does not exist.")
@@ -169,12 +169,11 @@ class QdrantDBProvider(VectorDBInterface):
 
             batch_text = texts[start_idx: start_idx + batch_size]
             batch_vectors = vectors[start_idx: start_idx + batch_size]
-            batch_metadatas = metadatas[start_idx: start_idx + batch_size]
-            batch_ids = ids[start_idx: start_idx + batch_size]
+            batch_entity_ids = entity_ids[start_idx: start_idx + batch_size]
 
             batch_points = [
                 models.PointStruct(
-                    id=batch_ids[x],
+                    id=str(uuid.uuid4()),
                     vector={
                         QdrantVectorType.DENSE.value: batch_vectors[x],
                         QdrantVectorType.SPARSE.value: models.Document(
@@ -184,7 +183,7 @@ class QdrantDBProvider(VectorDBInterface):
                     },
                     payload={
                         "text": batch_text[x],
-                        "metadata": batch_metadatas[x]
+                        "entity_ids": batch_entity_ids[x]
                     }
                 )
                 for x in range(len(batch_text))
@@ -230,7 +229,8 @@ class QdrantDBProvider(VectorDBInterface):
         results = [
             {
                 "score": res.score,
-                "text": res.payload["text"]
+                "text": res.payload["text"],
+                "entity_ids": res.payload["entity_ids"]
             }
             for res in results.points
         ]

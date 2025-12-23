@@ -1,5 +1,6 @@
 from ..LLMInterface import LLMInterface
 from ..LLMEnums import GeminiEnums, DocumentTypeEnum
+from typing import Union, List
 from google import genai
 from google.genai import types
 from google.genai.types import GenerateContentConfig
@@ -21,7 +22,7 @@ class GeminiProvider(LLMInterface):
 
         self.generation_model_id = None
 
-        self.client = genai.Client(api_key= self.api_key)
+        self.client = genai.Client(api_key=self.api_key)
 
         self.enums = GeminiEnums
         self.logger = logging.getLogger(__name__)
@@ -63,7 +64,7 @@ class GeminiProvider(LLMInterface):
 
         return [embed for embed in embeddings_result.embeddings]
     
-    def generate_with_structured_output(self, prompt: str, chat_history=[]):
+    def generate_with_structured_output(self, prompt: str, chat_history: Union[str, List] = None):
 
         if not self.client:
             self.logger.error("Gemini client was not set")
@@ -82,6 +83,10 @@ class GeminiProvider(LLMInterface):
                 response_json_schema=GraphComponents.model_json_schema(),
             )
         )
+
+        if response is None or not response.text:
+            self.logger.error("No response from Gemini client")
+            return None
 
         graph_components = GraphComponents.model_validate_json(response.text)
 

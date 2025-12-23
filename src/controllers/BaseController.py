@@ -4,9 +4,10 @@ import os
 class BaseController:
 
     def __init__(self):
-        self.config: Settings = get_settings
+        self.config: Settings = get_settings()
         self.base_dir = os.path.dirname(
             os.path.dirname(os.path.abspath(__file__)))
+        self.files_dir = os.path.join(self.base_dir, "assets/files")
         self.database_dir = os.path.join(self.base_dir, "assets/database")
         self.cache_dir = os.path.join(self.base_dir, "assets/cache")
     
@@ -27,3 +28,13 @@ class BaseController:
             os.makedirs(cache_path, exist_ok=True)
         
         return cache_path
+    
+    def get_file_path(self, file_name: str):
+
+        file_path = os.path.join(self.files_dir, file_name)
+
+        if not os.path.exists(file_path):
+            os.makedirs(file_path, exist_ok=True)
+        
+        return file_path
+    

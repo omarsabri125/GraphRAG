@@ -32,11 +32,11 @@ class VectorDBInterface(ABC):
         pass
 
     @abstractmethod
-    def insert_one(self, collection_name: str, text: str, vector: List, metadata: dict = None, id: str = None):
+    def insert_one(self, collection_name: str, text: str, vector: List, entity_ids: List[str] = None):
         pass
 
     @abstractmethod
-    def insert_many(self, collection_name: str, texts: List[str], vectors: List[List], metadatas: List[dict] = None, ids: List[str] = None, batch_size: int = 50):
+    def insert_many(self, collection_name: str, texts: List[str], vectors: List[List], entity_ids: List[List] = None, batch_size: int = 50):
         pass
 
     @abstractmethod
