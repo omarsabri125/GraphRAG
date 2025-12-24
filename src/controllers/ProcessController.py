@@ -23,7 +23,6 @@ class ProcessController(BaseController):
 
         return sentences
 
-
     def extract_entity_relationship(self, text: str):
 
         nodes = {}

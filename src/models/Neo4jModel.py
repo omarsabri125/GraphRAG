@@ -31,11 +31,11 @@ class Neo4jModel:
         return nodes
         
     async def retrieve_nodes_with_id(self):
-
         async with self.db_client.session() as session:
             result = await session.run("MATCH (n) RETURN n.id AS uuid, n.name AS name")
-            nodes = [{record["uuid"]: record["name"]} for record in result]
-        
+
+            nodes = {record["uuid"]: record["name"] async for record in result}
+            
         return nodes
         
     async def fetch_related_graph(self, entity_ids):
@@ -49,10 +49,12 @@ class Neo4jModel:
         WHERE e.id IN $entity_ids
         RETURN e, r, related, null as r2, null as n2
         """
+        subgraph = []
+
         async with self.db_client.session() as session:
             result = await session.run(query, entity_ids=entity_ids)
-            subgraph = []
-            for record in result:
+
+            async for record in result:
                 subgraph.append({
                     "entity": record["e"],
                     "relationship": record["r"],

@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.base import base_router
+from routes.nlp import nlp_router
 from helpers import get_settings, Settings
 from stores.llm.LLMProviderFactory import LLMProviderFactory
 from stores.vectordb.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.llm.templates.template_parser import TemplateParser
+from models.Neo4jModel import Neo4jModel
 from neo4j import AsyncGraphDatabase
 
 app = FastAPI(title="GraphRAG API")
@@ -28,6 +30,8 @@ async def startup_span():
 
     llm_provider_factory = LLMProviderFactory(settings)
     vectordb_provider_factory = VectorDBProviderFactory(settings)
+
+    app.neo4j_model = await Neo4jModel.create_instance(app.db_client)
 
     app.generation_client = llm_provider_factory.create_provider(
         settings.GENERATION_BACKEND)
@@ -57,4 +61,5 @@ app.on_event("startup")(startup_span)
 app.on_event("shutdown")(shutdown_span)
 
 app.include_router(base_router)
+app.include_router(nlp_router)
 

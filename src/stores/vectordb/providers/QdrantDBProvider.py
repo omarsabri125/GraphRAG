@@ -1,6 +1,7 @@
 from ..VectorDBInterface import VectorDBInterface
 from ..VectorDBEnums import DistanceMetricEnums, QdrantVectorType
 from qdrant_client import QdrantClient, models
+from schemes.SearchResultSchema import SearchResultSchema
 import uuid
 import logging
 from typing import List
@@ -227,12 +228,12 @@ class QdrantDBProvider(VectorDBInterface):
         )
 
         results = [
-            {
+             SearchResultSchema(**{
                 "score": res.score,
                 "text": res.payload["text"],
                 "entity_ids": res.payload["entity_ids"]
-            }
+            })
             for res in results.points
         ]
-
+        
         return results

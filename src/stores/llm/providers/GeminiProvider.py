@@ -34,7 +34,7 @@ class GeminiProvider(LLMInterface):
     def set_generation_model(self, model_id: str):
         self.generation_model_id = model_id
 
-    def embed_text(self, text: str, document_type = None):
+    def embed_text(self, text: Union[str, List[str]], document_type = None):
 
         if not self.client:
             self.logger.error("Gemini client was not set")
@@ -62,7 +62,7 @@ class GeminiProvider(LLMInterface):
             self.logger.error("No embedding returned from Gemini.")
             return None
 
-        return [embed for embed in embeddings_result.embeddings]
+        return [embed.values for embed in embeddings_result.embeddings]
     
     def generate_with_structured_output(self, prompt: str, chat_history: Union[str, List] = None):
 
@@ -92,7 +92,7 @@ class GeminiProvider(LLMInterface):
 
         return graph_components
     
-    def generate_text(self, prompt, chat_history= [], max_output_tokens = None, temperature = None):
+    def generate_text(self, prompt, chat_history: Union[str, List] = None, max_output_tokens = None, temperature = None):
         
         if not self.client:
             self.logger.error("Gemini client was not set")

@@ -63,7 +63,7 @@ class CohereProvider(LLMInterface):
         
         return GraphComponents.model_validate_json(text)
 
-    def generate_text(self, prompt: str, chat_history=[], max_output_tokens: int = None, temperature: float = None):
+    def generate_text(self, prompt: str, chat_history: Union[str, List] = None, max_output_tokens: int = None, temperature: float = None):
         if not self.client:
             self.logger.error("Cohere client is not initialized.")
             return None
