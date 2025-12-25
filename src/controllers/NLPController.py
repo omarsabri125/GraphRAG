@@ -28,9 +28,9 @@ class NLPController(BaseController):
             json.dumps(collection_info, default=lambda x: x.__dict__)
         )
     
-    def format_graph_context(subgraph):
+    def format_graph_context(self, subgraph):
         nodes = set()
-        edges = set()   
+        edges = set()  
 
         for entry in subgraph:
             entity = entry["entity"]
@@ -41,14 +41,15 @@ class NLPController(BaseController):
             nodes.add(related["name"])
 
             edge = f"{entity['name']} {relationship['type']} {related['name']}"
-            edges.add(edge)   
+            edges.add(edge)
+            # edges.append(f"{entity['name']} {relationship['type']} {related['name']}")   
 
         return {
             "nodes": list(nodes),
             "edges": list(edges)
         }
     
-    def extract_entity_ids(search_results):
+    def extract_entity_ids(self, search_results):
         seen = dict()   
 
         for result in search_results:
@@ -129,7 +130,7 @@ class NLPController(BaseController):
         
         return query_vector
     
-    async def retrieve_answer_from_cache(self, query_vector: list, cache_threshold=0.7):
+    async def retrieve_answer_from_cache(self, query_vector: list, cache_threshold=0.3):
 
         cache_result = await self.vector_db_client.search_cache(
             cache_name=self.config.CACHE_NAME,
@@ -154,7 +155,7 @@ class NLPController(BaseController):
         query_vector = await self.query_embeddings(text=query)
 
         result = await self.vector_db_client.search_by_vector(
-            collection_name=self.config.CACHE_NAME,
+            collection_name=self.config.COLLECTION_NAME,
             text=query,
             query_vector=query_vector,
             limit=limit

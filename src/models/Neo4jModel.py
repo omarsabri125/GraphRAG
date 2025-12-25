@@ -34,7 +34,7 @@ class Neo4jModel:
         async with self.db_client.session() as session:
             result = await session.run("MATCH (n) RETURN n.id AS uuid, n.name AS name")
 
-            nodes = {record["uuid"]: record["name"] async for record in result}
+            nodes = {record["name"]: record["uuid"] async for record in result}
             
         return nodes
         

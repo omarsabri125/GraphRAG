@@ -92,7 +92,7 @@ async def answer_rag(request: Request, search_request: SearchRequest):
             }
         )
 
-    answer, full_prompt, chat_history = await nlp_controller.rag_answer_question(
+    answer, full_prompt, chat_history = await nlp_controller.graph_rag_answer_question(
         query=search_request.text,
         limit=search_request.limit
     )
