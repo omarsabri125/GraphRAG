@@ -1,5 +1,0 @@
-{
-    "terminal.integrated.env.windows": {
-        "PYTHONIOENCODING": "utf-8"
-    }
-}
