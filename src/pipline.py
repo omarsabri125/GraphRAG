@@ -56,7 +56,7 @@ class Pipeline:
 
     async def close(self):
         """Close all async connections properly."""
-        await self.vectordb_client.close()
+        await self.vectordb_client.disconnect()
         await self.db_client.close()
 
     # ----------------- ENTITY EXTRACTION -----------------
@@ -81,7 +81,7 @@ class Pipeline:
         """Split sentences, retrieve node IDs, and index into vector DB."""
         # Connect to VectorDB
         await self.vectordb_client.connect()
-        await self.vectordb_client.cache_connect()
+        # await self.vectordb_client.cache_connect()
 
         # Ensure Neo4j instance
         if self.neo4j_model is None:
@@ -89,7 +89,7 @@ class Pipeline:
 
         # Initialize NLP controller
         self.nlp_controller = NLPController(
-            vectordb_client=self.vectordb_client,
+            vector_db_client=self.vectordb_client,
             embedding_client=self.embedding_client,
             generation_client=self.generation_client,
             template_parser=self.template_parser,
@@ -122,7 +122,7 @@ async def main():
     pipeline = Pipeline()
     try:
         # Step 1: Extract entities
-        await pipeline.entity_extraction_pipeline("desiease.txt")
+        # await pipeline.entity_extraction_pipeline("desiease.txt")
 
         # Step 2: Index sentences into vector DB
         node_id_mapping = await pipeline.pipeline_indexing("desiease.txt")
