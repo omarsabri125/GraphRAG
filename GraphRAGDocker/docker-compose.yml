@@ -1,0 +1,35 @@
+services:
+  fastapi:
+    build: 
+      context: ..
+      dockerfile: GraphRAGDocker/Dockerfile
+    container_name: fastapi
+    ports:
+      - "8001:8001"
+    volumes:
+      - fastapi_data:/app/assets
+    networks:
+      - backend
+    restart: always
+    env_file:
+      - ./env/.env.app
+
+  qdrant:
+    image: qdrant/qdrant:v1.15
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - backend
+    restart: always
+
+networks:
+  backend:
+    driver: bridge
+  
+volumes:
+  fastapi_data:
+  qdrant_data:
