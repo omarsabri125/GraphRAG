@@ -88,21 +88,3 @@ class ProcessController(BaseController):
 
         return nodes, relationships
     
-    
-
-
-# process = ProcessController()
-
-# load_file = process.load_txt_file("desiease.txt")
-# print(load_file[0].page_content)
-# sentences = process.sentence_splitting(raw_text=load_file[0].page_content)
-# print(sentences)
-# nodes, relationships = process.extract_entity_relationship(load_file[0].page_content)
-
-# print(nodes)
-# print("\n")
-# print("length of nodes:", len(nodes))
-# print("\n")
-# print("length of relationships:", len(relationships))
-# print("\n")
-# print(relationships)
