@@ -15,8 +15,10 @@ class Settings(BaseSettings):
     DAFAULT_OUTPUT_MAX_TOKENS: Optional[int] = None
     DAFAULT_TEMPERATURE: Optional[float] = None
     
+    STRUCTURE_OUTPUT_BACKEND: str
     GENERATION_BACKEND: str
     EMBEDDING_BACKEND: str
+    GENERATION_STRUCTURE_OUTPUT_MODEL_ID: Optional[str] = None
     GENERATION_MODEL_ID: Optional[str] = None
     EMBEDDING_MODEL_ID: Optional[str] = None
     EMBEDDING_MODEL_DIMENSION: Optional[str] = None
