@@ -81,7 +81,7 @@ class Pipeline:
         """Split sentences, retrieve node IDs, and index into vector DB."""
         # Connect to VectorDB
         await self.vectordb_client.connect()
-        # await self.vectordb_client.cache_connect()
+        await self.vectordb_client.cache_connect()
 
         # Ensure Neo4j instance
         if self.neo4j_model is None:
@@ -122,7 +122,7 @@ async def main():
     pipeline = Pipeline()
     try:
         # Step 1: Extract entities
-        # await pipeline.entity_extraction_pipeline("desiease.txt")
+        await pipeline.entity_extraction_pipeline("desiease.txt")
 
         # Step 2: Index sentences into vector DB
         node_id_mapping = await pipeline.pipeline_indexing("desiease.txt")
