@@ -33,9 +33,9 @@ class ProcessController(BaseController):
         )
         llm_provider_factory = LLMProviderFactory(self.config)
         generation_client = llm_provider_factory.create_provider(
-            provider_name=self.config.GENERATION_BACKEND
+            provider_name=self.config.STRUCTURE_OUTPUT_BACKEND
         )
-        generation_client.set_generation_model(model_id=self.config.GENERATION_MODEL_ID)
+        generation_client.set_generation_model(model_id=self.config.GENERATION_STRUCTURE_OUTPUT_MODEL_ID)
 
         chat_history = template_parser.get(
             "rag", "entity_relationship_system_prompt"
@@ -47,7 +47,7 @@ class ProcessController(BaseController):
             }
         )
 
-        if self.config.GENERATION_BACKEND == LLMEnums.COHERE.value:
+        if self.config.STRUCTURE_OUTPUT_BACKEND == LLMEnums.COHERE.value:
             chat_history = [
                 generation_client.construt_prompt(
                     prompt=chat_history,
