@@ -13,6 +13,26 @@ services:
     restart: always
     env_file:
       - ./env/.env.app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8001/api/v1/health"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
+      start_period: 5s
+  
+  streamlit:
+    build:
+      context: ..
+      dockerfile: frontend/Dockerfile
+    container_name: streamlit
+    ports:
+      - "8501:8501"
+    networks:
+      - backend
+    restart: always
+    depends_on:
+      fastapi:
+        condition: service_healthy
 
   qdrant:
     image: qdrant/qdrant:v1.15
