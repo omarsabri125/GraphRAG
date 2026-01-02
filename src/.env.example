@@ -13,15 +13,20 @@ AURA_INSTANCENAME=
 COHERE_API_KEY = ""
 GEMINI_API_KEY = ""
 
-GENERATION_BACKEND = "COHERE"  # openai, cohere, anthropic, gemini, groq
-EMBEDDING_BACKEND = "COHERE"
+STRUCTURE_OUTPUT_BACKEND = "GEMINI"  # openai, cohere, anthropic, gemini, groq
 
-DAFAULT_OUTPUT_MAX_TOKENS = 300
+GENERATION_BACKEND = "COHERE"  # openai, cohere, anthropic, gemini, groq
+EMBEDDING_BACKEND = "GEMINI"  # openai, cohere, anthropic, gemini, groq
+
+DAFAULT_OUTPUT_MAX_TOKENS = 400
 DAFAULT_TEMPERATURE = 0.1
 
+GENERATION_STRUCTURE_OUTPUT_MODEL_ID = "gemini-2.5-flash"
+
 GENERATION_MODEL_ID = "command-a-03-2025"
-EMBEDDING_MODEL_ID = "embed-multilingual-light-v3.0"
-EMBEDDING_MODEL_DIMENSION = 768
+EMBEDDING_MODEL_ID = "gemini-embedding-001"
+EMBEDDING_MODEL_DIMENSION = 512
+
 
 ####################### Vector DB Config ##########
 VECTOR_DB_BACKEND = "qdrant"
