@@ -8,6 +8,7 @@ from stores.vectordb.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.llm.templates.template_parser import TemplateParser
 from models.Neo4jModel import Neo4jModel
 from neo4j import AsyncGraphDatabase
+from utils.metrics import setup_metrics
 
 app = FastAPI(title="GraphRAG API")
 
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_credentials=["*"],
     allow_headers=["*"],
 )
+
+setup_metrics(app)
 
 async def startup_span():
 

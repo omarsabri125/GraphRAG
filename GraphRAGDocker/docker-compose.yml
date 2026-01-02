@@ -59,6 +59,56 @@ services:
       - backend
     restart: always
 
+  # neo4j:
+  #   image: neo4j:latest
+  #   container_name: neo4j
+  #   ports:
+  #     - "7474:7474"  # HTTP
+  #     - "7687:7687"  # Bolt
+  #   networks:
+  #     - backend
+  #   env_file:
+  #     - ./env/.env.neo4j
+  #   volumes:
+  #     - neo4j_data:/data
+  #     - neo4j_logs:/logs
+  #     - neo4j_import:/var/lib/neo4j/import
+  #     - neo4j_plugins:/plugins
+  #   restart: always
+
+  # prometheus:
+  #   image: prom/prometheus:v3.7.3
+  #   container_name: prometheus
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - prometheus_data:/prometheus
+  #     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     - backend
+  #   restart: always
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
+  #     - '--storage.tsdb.path=/prometheus'
+  #     - '--web.console.libraries=/etc/prometheus/console_libraries'
+  #     - '--web.console.templates=/etc/prometheus/consoles'
+  #     - '--web.enable-lifecycle'
+    
+  # grafana:
+  #   image: grafana/grafana:12.1-ubuntu
+  #   container_name: grafana
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - grafana_data:/var/lib/grafana
+  #   env_file:
+  #     - ./env/.env.grafana
+  #   depends_on:
+  #     - prometheus
+  #   networks:
+  #     - backend
+  #   restart: always
+
 networks:
   backend:
     driver: bridge
@@ -66,3 +116,9 @@ networks:
 volumes:
   fastapi_data:
   qdrant_data:
+  # neo4j_data:
+  # neo4j_logs:
+  # neo4j_import:
+  # neo4j_plugins:
+  # prometheus_data:
+  # grafana_data:
